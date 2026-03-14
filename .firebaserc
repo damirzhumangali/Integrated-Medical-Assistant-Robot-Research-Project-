@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "medical-robot-001",
+    "staging": "medical-robot-001"
+  },
+  "targets": {},
+  "etags": {}
+}

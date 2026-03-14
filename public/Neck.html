@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <title>BMO — Шея</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0fff4;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* ЕДИНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (тот же, что на главной, груди, голове) */
+    .lang-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .lang-btn.active {
+      background: #0ea5e9;
+      color: white;
+    }
+    .lang-btn:hover:not(.active) { background: rgba(14,165,233,0.2); }
+
+    header {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 2.8rem; margin-bottom: 10px; }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+      padding: 40px;
+    }
+    .section { margin-bottom: 32px; }
+    label { font-size: 1.15rem; font-weight: 600; display: block; margin-bottom: 10px; }
+    select, button {
+      width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: 1px solid #ccc; font-size: 16px;
+    }
+    button {
+      background: #10b981; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #059669; }
+
+    .recommendation {
+      background: #ecfdf5; padding: 22px; border-radius: 12px; margin-top: 25px;
+      border-left: 6px solid #10b981; font-size: 1.05rem; line-height: 1.7;
+    }
+    .warning {
+      color: #991b1b; font-weight: bold; font-size: 1.3rem;
+      background: #fee2e2; padding: 14px; border-radius: 8px; margin: 12px 0;
+    }
+    footer {
+      text-align: center; padding: 30px; background: #f0fdf4;
+      border-radius: 16px; margin-top: 40px; color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Переключатель языка -->
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
+  <header>
+    <h1 data-ru="Шея – Где болит?" data-en="Neck – Where Does It Hurt?">Шея – Где болит?</h1>
+    <p data-ru="Быстрая помощь при боли в шее и плечах<br><strong>Онёмение рук + сильная боль + головокружение → сразу 103!</strong>"
+       data-en="Quick help for neck & shoulder pain<br><strong>Numbness in arms + severe pain + dizziness → call 911 now!</strong>">
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="section">
+      <label data-ru="Характер и локализация боли:" data-en="Pain type and location:">Характер и локализация боли:</label>
+      <select id="painType">
+        <option value="muscle" data-ru="Мышечная (после сна, нагрузки, сидения)" data-en="Muscle pain (after sleeping, strain, sitting)"></option>
+        <option value="spine"  data-ru="Позвоночная (хруст, прострелы, отдаёт в руку)" data-en="Spinal (crunching, shooting pain, radiates to arm)"></option>
+        <option value="nerve"  data-ru="Невралгия / корешковый синдром" data-en="Nerve pain / radiculopathy"></option>
+        <option value="throat" data-ru="Горло + шея (лимфоузлы, ангина)" data-en="Throat-related (swollen lymph nodes, sore throat)"></option>
+        <option value="danger" data-ru="Резкая + онемение рук + головокружение" data-en="Sudden + arm numbness + dizziness"></option>
+        <option value="other"  data-ru="Другая / хроническая" data-en="Other / chronic"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Вероятная причина:" data-en="Likely cause:">Вероятная причина:</label>
+      <select id="disease">
+        <option value="myositis"      data-type="muscle" data-ru="Миозит (переохлаждение, сквозняк)" data-en="Myositis (cold draft, chill)"></option>
+        <option value="posture"       data-type="muscle" data-ru="Плохая осанка / «офисная шея»" data-en="Poor posture / tech neck"></option>
+
+        <option value="osteochondrosis" data-type="spine" data-ru="Шейный остеохондроз" data-en="Cervical osteochondrosis"></option>
+        <option value="protrusion"     data-type="spine" data-ru="Протрузия / грыжа диска" data-en="Disc protrusion / herniation"></option>
+        <option value="spondylosis"    data-type="spine" data-ru="Спондилёз / унковертебральный артроз" data-en="Spondylosis / uncovertebral arthrosis"></option>
+
+        <option value="radiculopathy"  data-type="nerve" data-ru="Корешковый синдром (онемение в руке)" data-en="Radiculopathy (arm numbness)"></option>
+
+        <option value="lymphadenitis"  data-type="throat" data-ru="Воспаление лимфоузлов" data-en="Lymphadenitis"></option>
+        <option value="tonsillitis"    data-type="throat" data-ru="Ангина / фарингит" data-en="Tonsillitis / pharyngitis"></option>
+
+        <option value="myelopathy"           data-type="danger" data-ru="Шейная миелопатия" data-en="Cervical myelopathy"></option>
+        <option value="vertebral_dissection" data-type="danger" data-ru="Расслоение позвоночной артерии" data-en="Vertebral artery dissection"></option>
+
+        <option value="stress"   data-type="other" data-ru="Психосоматическое напряжение" data-en="Stress-related tension"></option>
+        <option value="unknown"  data-type="other" data-ru="Неясная причина" data-en="Unclear cause"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Интенсивность боли (0–10):" data-en="Pain intensity (0–10):">Интенсивность боли:</label>
+      <select id="painLevel">
+        <option value="0-4" data-ru="0–4 – терпимая" data-en="0–4 – tolerable"></option>
+        <option value="5-7" data-ru="5–7 – сильная" data-en="5–7 – strong"></option>
+        <option value="8-10" data-ru="8–10 – невыносимая" data-en="8–10 – unbearable"></option>
+      </select>
+    </div>
+
+    <button onclick="showRecommendation()" data-ru="Показать рекомендации" data-en="Show recommendations">Показать рекомендации</button>
+
+    <div style="text-align:center; margin:40px 0;">
+      <button onclick="history.back()" style="background:#4b5563;color:white;padding:14px 36px;border:none;border-radius:12px;font-weight:bold;">
+        <span data-ru="НАЗАД" data-en="BACK">НАЗАД</span>
+      </button>
+    </div>
+
+    <div id="recommendation" class="recommendation" style="display:none;"></div>
+  </div>
+
+  <footer data-ru="© 2025 Мини-медицинская машина | Это только ориентир!<br>Онёмение рук + шаткость походки + недержание + сильная боль → немедленно 103/112"
+          data-en="© 2025 Mini Medical Assistant | Guide only!<br>Arm numbness + unsteady gait + incontinence + severe pain → call 911 immediately!">
+  </footer>
+
+  <!-- УНИВЕРСАЛЬНЫЙ СКРИПТ ПЕРЕВОДА -->
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-ru][data-en]');
+
+    let currentLang = 'ru';
+
+    function updateAllTexts() {
+      translatable.forEach(el => el.innerHTML = el.dataset[currentLang]);
+      document.querySelectorAll('option[data-ru][data-en]').forEach(opt => opt.textContent = opt.dataset[currentLang]);
+      document.title = document.querySelector('h1').dataset[currentLang] + ' — BMO';
+      document.documentElement.lang = currentLang;
+      filterDiseases();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      updateAllTexts();
+    }
+
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    // Загружаем язык из localStorage (работает с главной и другими страницами!)
+    currentLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(currentLang);
+
+    // Фильтрация заболеваний
+    function filterDiseases() {
+      const type = document.getElementById('painType').value;
+      const options = document.querySelectorAll('#disease option');
+
+      let first = null;
+      options.forEach(opt => {
+        const show = opt.dataset.type === type || opt.dataset.type === 'other' || (opt.dataset.type === 'danger' && type === 'danger');
+        opt.style.display = show ? 'block' : 'none';
+        if (show && !first) first = opt;
+      });
+      if (first) document.getElementById('disease').value = first.value;
+    }
+
+    document.getElementById('painType').addEventListener('change', filterDiseases);
+
+    // Рекомендации
+    function showRecommendation() {
+      const disease = document.getElementById('disease').value;
+      const level = document.getElementById('painLevel').value;
+      const isEn = currentLang === 'en';
+
+      let rec = `<strong>${isEn ? 'Intensity' : 'Интенсивность'}:</strong> ${document.querySelector('#painLevel').selectedOptions[0].textContent}<br><br>`;
+
+      const emergency = ['myelopathy', 'vertebral_dissection'].includes(disease) || (document.getElementById('painType').value === 'danger' && level === '8-10');
+
+      if (emergency) {
+        rec += isEn
+          ? `<div class="warning">CALL 911 IMMEDIATELY!</div>`
+          : `<div class="warning">ЭКСТРЕННО ВЫЗЫВАЙТЕ СКОРУЮ 103/112 СЕЙЧАС ЖЕ!</div>`;
+      } else if (level === '8-10') {
+        rec += isEn
+          ? `<div class="warning">Very severe pain — see a doctor within hours!</div>`
+          : `<div class="warning">Очень сильная боль — к врачу в ближайшие часы!</div>`;
+      }
+
+      const advice = isEn ? {
+        myositis: "Neck myositis:<br>• Ibuprofen 400–600 mg or Diclofenac<br>• Warming ointment (Capsicam)<br>• Dry heat, rest 2–3 days",
+        posture: "Poor posture / tech neck:<br>• Neck exercises every 1–2 hours<br>• Orthopedic pillow<br>• Correct monitor height",
+        osteochondrosis: "Cervical osteochondrosis:<br>• NSAIDs (Meloxicam)<br>• Muscle relaxants (Mydocalm)<br>• Physiotherapy, massage",
+        protrusion: "Disc protrusion/herniation:<br>• NSAIDs + B-vitamins<br>• MRI of cervical spine<br>• See neurologist urgently!",
+        spondylosis: "Spondylosis:<br>• Chondroprotectors<br>• Physiotherapy<br>• Avoid sharp turns",
+        radiculopathy: "Radiculopathy:<br>• NSAIDs + B-vitamins<br>• Arm numbness → MRI + neurologist ASAP!",
+        lymphadenitis: "Swollen lymph nodes:<br>• Warm drinks, gargling<br>• Fever → see ENT/doctor",
+        tonsillitis: "Tonsillitis:<br>• Antibiotics only if prescribed<br>• Sprays (Hexoral, Tantum Verde)",
+        myelopathy: "Cervical myelopathy — CALL 911! Possible spinal cord compression!",
+        vertebral_dissection: "Vertebral artery dissection — CALL 911! Stroke risk!",
+        stress: "Stress-related tension:<br>• Magnesium B6<br>• Breathing exercises, yoga",
+        unknown: "Unclear cause:<br>Start with neurologist + neck X-ray/MRI.<br>Until then: Ibuprofen + dry heat."
+      } : {
+        myositis: "Миозит шеи:<br>• Ибупрофен 400–600 мг или Диклофенак<br>• Согревающая мазь (Капсикам, Финалгон)<br>• Сухое тепло, покой 2–3 дня",
+        posture: "Плохая осанка / «смартфонная шея»:<br>• ЛФК для шеи каждые 1–2 часа<br>• Ортопедическая подушка<br>• Правильная высота монитора",
+        osteochondrosis: "Шейный остеохондроз:<br>• НПВС (Мовалис, Аркоксия)<br>• Миорелаксанты (Мидокалм)<br>• Физиотерапия, массаж",
+        protrusion: "Протрузия / грыжа:<br>• НПВС + витамины B<br>• МРТ шейного отдела<br>• К неврологу!",
+        spondylosis: "Спондилёз / ункоартроз:<br>• Хондропротекторы<br>• Физиотерапия<br>• Избегать резких поворотов",
+        radiculopathy: "Корешковый синдром:<br>• НПВС + витамины B<br>• При онемении руки — МРТ + невролог срочно!",
+        lymphadenitis: "Воспалённые лимфоузлы:<br>• Полоскание горла, тёплое питьё<br>• При температуре — к ЛОРу",
+        tonsillitis: "Ангина:<br>• Антибиотики только по назначению<br>• Полоскания, спреи",
+        myelopathy: "Шейная миелопатия — СКОРАЯ! Возможна компрессия спинного мозга!",
+        vertebral_dissection: "Расслоение позвоночной артерии — СКОРАЯ! Риск инсульта!",
+        stress: "Психосоматическое напряжение:<br>• Магний B6, Афобазол<br>• Дыхательная гимнастика",
+        unknown: "Неясная причина:<br>Начните с невролога + рентген/МРТ шеи.<br>До визита: Ибупрофен + сухое тепло."
+      };
+
+      const selectedText = document.querySelector('#disease').selectedOptions[0].textContent;
+      rec += `<strong>${selectedText}:</strong><br>`;
+      rec += advice[disease] || (isEn ? "See a doctor soon." : "Обратитесь к врачу.");
+
+      document.getElementById('recommendation').innerHTML = rec;
+      document.getElementById('recommendation').style.display = 'block';
+    }
+  </script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCx5luU29nUjrUxyqM50cH5hLS6hsc4KiI",
+      authDomain: "bmo-001.firebaseapp.com",
+      projectId: "bmo-001",
+      storageBucket: "bmo-001.firebasestorage.app",
+      messagingSenderId: "767001348534",
+      appId: "1:767001348534:web:8a04b36126fa2253e35917",
+      measurementId: "G-5Z6JJYQ92Q"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</body>
+</html>

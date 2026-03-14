@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <title>BMO — Голова</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f9ff;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* ЕДИНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА — как на главной и груди */
+    .lang-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .lang-btn.active {
+      background: #0ea5e9;
+      color: white;
+    }
+    .lang-btn:hover:not(.active) { background: rgba(14,165,233,0.2); }
+
+    header {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 2.8rem; margin-bottom: 10px; }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+      padding: 40px;
+    }
+    .section { margin-bottom: 32px; }
+    label { font-size: 1.15rem; font-weight: 600; display: block; margin-bottom: 10px; }
+    select, button {
+      width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: 1px solid #ccc; font-size: 16px;
+    }
+    button {
+      background: #7c3aed; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #6d28d9; }
+
+    .recommendation {
+      background: #f3e8ff;
+      padding: 22px;
+      border-radius: 12px;
+      margin-top: 25px;
+      border-left: 6px solid #7c3aed;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .warning {
+      color: #b91c1c;
+      font-weight: bold;
+      font-size: 1.3rem;
+      background: #fee2e2;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #faf5ff;
+      border-radius: 16px;
+      margin-top: 40px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Переключатель языка -->
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
+  <header>
+    <h1 data-ru="Голова – Где болит?" data-en="Head – Where Does It Hurt?">Голова – Где болит?</h1>
+    <p data-ru="Помощник при головной боли<br><strong>Внезапная «самая сильная в жизни» боль, рвота, потеря сознания — сразу 103!</strong>"
+       data-en="Headache helper<br><strong>Sudden «worst headache of my life», vomiting, loss of consciousness — call 911 immediately!</strong>">
+      Помощник при головной боли<br><strong>Внезапная «самая сильная в жизни» боль, рвота, потеря сознания — сразу 103!</strong>
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="section">
+      <label data-ru="Тип и локализация боли:" data-en="Type and location of pain:">Тип и локализация боли:</label>
+      <select id="painType">
+        <option value="tension"  data-ru="Напряжения (давит обручем, весь день)" data-en="Tension-type (band-like pressure, all day)"></option>
+        <option value="migraine" data-ru="Мигрень (пульсирует, одна половина, тошнота)" data-en="Migraine (throbbing, one side, nausea)"></option>
+        <option value="cluster"  data-ru="Кластерная (сверлит глаз, ночью, очень сильная)" data-en="Cluster (drilling eye pain, at night, severe)"></option>
+        <option value="sinus"    data-ru="Синусная (лоб/щеки, насморк)" data-en="Sinus (forehead/cheeks, runny nose)"></option>
+        <option value="cervical" data-ru="Шейная (из шеи в затылок)" data-en="Neck-related (from neck to occiput)"></option>
+        <option value="danger"   data-ru="Внезапная «громоподобная», самая сильная в жизни" data-en="Sudden thunderclap, worst ever"></option>
+        <option value="other"    data-ru="Другая / хроническая" data-en="Other / chronic"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Вероятная причина:" data-en="Likely cause:">Вероятная причина:</label>
+      <select id="disease">
+        <option value="tension_hd"      data-type="tension"   data-ru="Головная боль напряжения" data-en="Tension-type headache"></option>
+        <option value="stress"          data-type="tension"   data-ru="Стресс / переутомление" data-en="Stress / fatigue"></option>
+
+        <option value="migraine_classic" data-type="migraine" data-ru="Мигрень с аурой" data-en="Migraine with aura"></option>
+        <option value="migraine_common"  data-type="migraine" data-ru="Мигрень без ауры" data-en="Migraine without aura"></option>
+
+        <option value="cluster"         data-type="cluster"   data-ru="Кластерная головная боль" data-en="Cluster headache"></option>
+
+        <option value="sinusitis"       data-type="sinus"     data-ru="Синусит / гайморит" data-en="Sinusitis"></option>
+
+        <option value="cervicogenic"    data-type="cervical"  data-ru="Цервикогенная (от шеи)" data-en="Cervicogenic headache"></option>
+        <option value="osteochondrosis" data-type="cervical"  data-ru="Остеохондроз шейного отдела" data-en="Cervical osteochondrosis"></option>
+
+        <option value="subarachnoid"    data-type="danger"    data-ru="Субарахноидальное кровоизлияние" data-en="Subarachnoid hemorrhage"></option>
+        <option value="meningitis"      data-type="danger"    data-ru="Менингит / энцефалит" data-en="Meningitis / encephalitis"></option>
+        <option value="stroke"          data-type="danger"    data-ru="Инсульт" data-en="Stroke"></option>
+
+        <option value="hypertension"    data-type="other"     data-ru="Артериальная гипертензия" data-en="Hypertension crisis"></option>
+        <option value="medication_overuse" data-type="other"  data-ru="Абузусная ГБ (от обезболивающих)" data-en="Medication-overuse headache"></option>
+        <option value="unknown"         data-type="other"     data-ru="Неясная причина" data-en="Unclear cause"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Интенсивность боли (0–10):" data-en="Pain intensity (0–10):">Интенсивность боли:</label>
+      <select id="painLevel">
+        <option value="0-4" data-ru="0–4 – слабая" data-en="0–4 – mild"></option>
+        <option value="5-7" data-ru="5–7 – умеренная–сильная" data-en="5–7 – moderate to strong"></option>
+        <option value="8-10" data-ru="8–10 – невыносимая" data-en="8–10 – unbearable"></option>
+      </select>
+    </div>
+
+    <button onclick="showRecommendation()" data-ru="Показать рекомендации" data-en="Show recommendations">Показать рекомендации</button>
+
+    <div style="text-align:center; margin:40px 0;">
+      <button onclick="history.back()" 
+              style="background:#4b5563; color:white; border:none; padding:14px 36px; font-size:1.1rem; font-weight:bold; border-radius:12px; cursor:pointer;">
+        <span data-ru="← НАЗАД" data-en="← BACK">← НАЗАД</span>
+      </button>
+    </div>
+
+    <div id="recommendation" class="recommendation" style="display:none;"></div>
+  </div>
+
+  <footer data-ru="© 2025 Мини-медицинская машина | Это только ориентир!<br>При «взрывной» головной боли, температуре >38.5, ригидности шеи, спутанности сознания — немедленно звоните 103/112"
+          data-en="© 2025 Mini Medical Assistant | This is only a guide!<br>Sudden worst headache ever, fever >38.5°C, stiff neck, confusion — call 911 immediately!">
+  </footer>
+
+  <!-- УНИВЕРСАЛЬНЫЙ СКРИПТ ПЕРЕВОДА -->
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-ru][data-en]');
+
+    let currentLang = 'ru';
+
+    function updateAllTexts() {
+      // Обычные элементы
+      translatable.forEach(el => {
+        el.innerHTML = el.dataset[currentLang];
+      });
+
+      // Все <option> в select'ах
+      document.querySelectorAll('option[data-ru][data-en]').forEach(opt => {
+        opt.textContent = opt.dataset[currentLang];
+      });
+
+      // Title страницы
+      document.title = document.querySelector('h1').dataset[currentLang] + ' — BMO';
+
+      document.documentElement.lang = currentLang;
+      filterDiseases(); // обновляем фильтр
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      updateAllTexts();
+    }
+
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    // Загружаем сохранённый язык (работает с главной и грудью!)
+    currentLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(currentLang);
+
+    // Фильтрация заболеваний
+    function filterDiseases() {
+      const type = document.getElementById('painType').value;
+      const options = document.querySelectorAll('#disease option');
+
+      let first = null;
+      options.forEach(opt => {
+        const show = opt.dataset.type === type || opt.dataset.type === 'other' || (opt.dataset.type === 'danger' && type === 'danger');
+        opt.style.display = show ? 'block' : 'none';
+        if (show && !first) first = opt;
+      });
+      if (first) document.getElementById('disease').value = first.value;
+    }
+
+    document.getElementById('painType').addEventListener('change', filterDiseases);
+
+    // Рекомендации
+    function showRecommendation() {
+      const disease = document.getElementById('disease').value;
+      const level = document.getElementById('painLevel').value;
+      const isEn = currentLang === 'en';
+
+      let rec = `<strong>${isEn ? 'Intensity' : 'Интенсивность'}:</strong> ${document.querySelector('#painLevel').selectedOptions[0].textContent}<br><br>`;
+
+      const emergency = ['subarachnoid', 'meningitis', 'stroke'].includes(disease) || (document.getElementById('painType').value === 'danger' && level === '8-10');
+
+      if (emergency) {
+        rec += isEn
+          ? `<div class="warning">CALL 911 IMMEDIATELY!</div>`
+          : `<div class="warning">ЭКСТРЕННО ВЫЗЫВАЙТЕ СКОРУЮ 103/112!</div>`;
+      } else if (level === '8-10') {
+        rec += isEn
+          ? `<div class="warning">Very severe pain — see a doctor within hours!</div>`
+          : `<div class="warning">Очень сильная боль — к врачу в ближайшие часы!</div>`;
+      }
+
+      const advice = isEn ? {
+        tension_hd: "Tension-type headache:<br>• Ibuprofen 400–600 mg or Paracetamol 1000 mg<br>• Rest, fresh air, neck massage<br>• Avoid screens & stress",
+        stress: "Stress/fatigue:<br>• Magnesium B6, glycine<br>• 7–8 h sleep<br>• Walks, meditation",
+        migraine_classic: "Migraine with aura:<br>• Triptans (Sumatriptan) at aura onset<br>• Dark room, silence, cold pack",
+        migraine_common: "Migraine without aura:<br>• Triptans at start of attack<br>• Ibuprofen + Domperidone (for nausea)",
+        cluster: "Cluster headache:<br>• 100% oxygen 12–15 L/min<br>• Subcutaneous/spray Sumatriptan<br>• See neurologist urgently!",
+        sinusitis: "Sinusitis:<br>• Nasal saline rinse<br>• Decongestant drops (max 5 days)<br>• Antibiotics only if prescribed",
+        cervicogenic: "Cervicogenic headache:<br>• NSAIDs + muscle relaxants<br>• Neck exercises, massage<br>• Orthopedic pillow",
+        osteochondrosis: "Cervical osteochondrosis:<br>• Diclofenac, Meloxicam<br>• Physiotherapy, manual therapy",
+        subarachnoid: "Subarachnoid hemorrhage — CALL 911 NOW!",
+        meningitis: "Meningitis — CALL 911 NOW!",
+        stroke: "Stroke — time is brain! CALL 911 IMMEDIATELY!",
+        hypertension: "Hypertensive crisis:<br>• Captopril 25 mg under tongue<br>• Rest, measure BP<br>• See cardiologist",
+        medication_overuse: "Medication-overuse headache:<br>• Stop painkillers for 2–3 months<br>• Prevention: Amitriptyline, Topiramate (as prescribed)",
+        unknown: "Unclear cause:<br>Keep a headache diary for 2 weeks and see a neurologist.<br>Until then: Ibuprofen/Paracetamol max 2–3×/week."
+      } : {
+        tension_hd: "Головная боль напряжения:<br>• Ибупрофен 400–600 мг или Парацетамол 1000 мг<br>• Отдых, проветривание, массаж шеи<br>• Избегать экранов и стресса",
+        stress: "Стресс/переутомление:<br>• Магний В6, глицин<br>• Сон 7–8 ч<br>• Прогулки, медитация",
+        migraine_classic: "Мигрень с аурой:<br>• Триптаны при начале ауры<br>• Темнота, тишина, холод на лоб",
+        migraine_common: "Мигрень без ауры:<br>• Триптаны в начале приступа<br>• Ибупрофен + Домперидон",
+        cluster: "Кластерная ГБ:<br>• 100% кислород 12–15 л/мин<br>• Суматриптан п/к или спрей<br>• К неврологу срочно!",
+        sinusitis: "Синусит/гайморит:<br>• Промывание носа<br>• Сосудосуживающие капли 3–5 дней<br>• Антибиотики только по назначению",
+        cervicogenic: "Цервикогенная ГБ:<br>• НПВС + миорелаксанты<br>• ЛФК шеи, массаж<br>• Ортопедическая подушка",
+        osteochondrosis: "Шейный остеохондроз:<br>• Диклофенак, Мовалис<br>• Физиотерапия",
+        subarachnoid: "Субарахноидальное кровоизлияние — НЕМЕДЛЕННО СКОРАЯ!",
+        meningitis: "Менингит — НЕМЕДЛЕННО СКОРАЯ!",
+        stroke: "Инсульт — время = мозг! СКОРАЯ немедленно!",
+        hypertension: "Гипертонический криз:<br>• Каптоприл 25 мг под язык<br>• Покой, измерять АД",
+        medication_overuse: "Абузусная ГБ:<br>• Полный отказ от обезболивающих на 2–3 месяца<br>• Профилактика: Амитриптилин, Топирамат",
+        unknown: "Неясная причина:<br>Вести дневник ГБ 2 недели и к неврологу.<br>До визита: Ибупрофен/Парацетамол не чаще 2–3 раз в неделю."
+      };
+
+      const selectedText = document.querySelector('#disease').selectedOptions[0].textContent;
+      rec += `<strong>${selectedText}:</strong><br>`;
+      rec += advice[disease] || (isEn ? "See a neurologist." : "Обратитесь к неврологу.");
+
+      document.getElementById('recommendation').innerHTML = rec;
+      document.getElementById('recommendation').style.display = 'block';
+    }
+  </script>
+
+  <!-- Firebase (оставил как было) -->
+  <<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtMIXlm5vvWEg2TjI2B3hAnMufNKeJRMk",
+    authDomain: "medhelper-6d1c6.firebaseapp.com",
+    projectId: "medhelper-6d1c6",
+    storageBucket: "medhelper-6d1c6.firebasestorage.app",
+    messagingSenderId: "844786613460",
+    appId: "1:844786613460:web:4a059dee65d63a28918f41",
+    measurementId: "G-0CQKYNJW7D"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>

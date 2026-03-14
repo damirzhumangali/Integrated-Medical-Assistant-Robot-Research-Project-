@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Вход</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#2e1a16,#4d2c20);
+      display:flex;justify-content:center;align-items:center;
+      height:100vh;color:#333
+    }
+    .box{
+      background:#fff;padding:2.5rem;border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+      width:320px;text-align:center;animation:fadeIn .8s ease-in-out
+    }
+    .box h2{margin-bottom:20px;font-size:26px;color:#4e2e28}
+    input{
+      width:100%;margin-top:12px;padding:12px;font-size:16px;
+      border:1px solid #ccc;border-radius:8px;outline:none;transition:.2s ease
+    }
+    input:focus{border-color:#f2c94c;box-shadow:0 0 0 2px rgba(242,201,76,.3)}
+    button{
+      width:100%;margin-top:14px;padding:12px;font-size:16px;border:none;
+      border-radius:8px;cursor:pointer;font-weight:600;background:#f2c94c;
+      color:#1e1e1e;transition:background .2s ease
+    }
+    button:hover{background:#ffe58c}
+    .msg{margin-top:12px;font-size:14px;color:#6b7280;word-break:break-word}
+    .msg.err{color:#dc2626}
+    .msg.ok{color:#16a34a}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔐 Вход</h2>
+
+    <input type="email" id="email" placeholder="Email" autocomplete="username" />
+    <input type="password" id="password" placeholder="Пароль" autocomplete="current-password" />
+    <button id="loginBtn">Войти</button>
+
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    // ✅ ТВОЙ medical-robot-001 CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyBkSJUwZ8f6x-b6JzRpx9pWUchyKlMmwok",
+      authDomain: "medical-robot-001.firebaseapp.com",
+      projectId: "medical-robot-001",
+      storageBucket: "medical-robot-001.firebasestorage.app",
+      messagingSenderId: "99514799404",
+      appId: "1:99514799404:web:666107393a77ff0a350889",
+      measurementId: "G-Z2VSPPGQ3Z"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const emailEl = document.getElementById("email");
+    const passEl  = document.getElementById("password");
+    const msgEl   = document.getElementById("msg");
+    const btn     = document.getElementById("loginBtn");
+
+    const setMsg = (t, type="") => {
+      msgEl.className = "msg " + type;
+      msgEl.textContent = t || "";
+    };
+
+    // если уже вошёл — сразу на indep.html
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "./index.html";
+    });
+
+    const doLogin = async () => {
+      setMsg("");
+      try {
+        const email = emailEl.value.trim();
+        const pass  = passEl.value;
+
+        if (!email || !pass) {
+          setMsg("Введите email и пароль", "err");
+          return;
+        }
+
+        await signInWithEmailAndPassword(auth, email, pass);
+        setMsg("Успешный вход ✅", "ok");
+        window.location.href = "./index.html";
+      } catch (e) {
+        setMsg(e?.message || "Ошибка входа", "err");
+      }
+    };
+
+    btn.addEventListener("click", doLogin);
+    passEl.addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+  </script>
+</body>
+</html>

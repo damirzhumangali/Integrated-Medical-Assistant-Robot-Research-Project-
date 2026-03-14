@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <title>BMO — Правая рука</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fff7ed;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* ЕДИНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА */
+    .lang-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .lang-btn.active {
+      background: #0ea5e9;
+      color: white;
+    }
+    .lang-btn:hover:not(.active) { background: rgba(14,165,233,0.2); }
+
+    header {
+      background: linear-gradient(135deg, #ea580c, #fb923c);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 2.8rem; margin-bottom: 10px; }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+      padding: 40px;
+    }
+    .section { margin-bottom: 32px; }
+    label { font-size: 1.15rem; font-weight: 600; display: block; margin-bottom: 10px; }
+    select, button {
+      width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: 1px solid #ccc; font-size: 16px;
+    }
+    button {
+      background: #ea580c; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #c2410c; }
+
+    .recommendation {
+      background: #fff4e6; padding: 24px; border-radius: 12px; margin-top: 25px;
+      border-left: 6px solid #ea580c; font-size: 1.05rem; line-height: 1.8;
+    }
+    .warning {
+      color: #7f1d1d; font-weight: bold; font-size: 1.35rem;
+      background: #fee2e2; padding: 18px; border-radius: 12px; margin: 15px 0;
+      text-align: center; border: 2px solid #fca5a5;
+    }
+    footer {
+      text-align: center; padding: 30px; background: #fff4e6;
+      border-radius: 16px; margin-top: 40px; color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Переключатель языка -->
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
+  <header>
+    <h1 data-ru="Правая рука – Где болит?" data-en="Right Arm – Where Does It Hurt?">Правая рука – Где болит?</h1>
+    <p data-ru="Помощник при боли, онемении и слабости в правой руке и плече"
+       data-en="Helper for pain, numbness and weakness in right arm and shoulder">
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="section">
+      <label data-ru="Где и как болит:" data-en="Where and how it hurts:">Где и как болит:</label>
+      <select id="painType">
+        <option value="shoulder"        data-ru="Плечо / надплечье" data-en="Shoulder / upper arm"></option>
+        <option value="arm"             data-ru="Предплечье / вся рука" data-en="Forearm / whole arm"></option>
+        <option value="elbow"           data-ru="Локоть" data-en="Elbow"></option>
+        <option value="wrist_hand"      data-ru="Запястье / кисть / пальцы" data-en="Wrist / hand / fingers"></option>
+        <option value="numbness"        data-ru="Онемение / покалывание" data-en="Numbness / tingling"></option>
+        <option value="neck_radiating"  data-ru="Боль из шеи отдаёт в руку" data-en="Pain from neck radiates to arm"></option>
+        <option value="overload"         data-ru="После нагрузки / работы" data-en="After strain / work"></option>
+        <option value="other"           data-ru="Другое / неясно" data-en="Other / unclear"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Вероятная причина:" data-en="Likely cause:">Вероятная причина:</label>
+      <select id="disease">
+        <option value="periarthritis"     data-type="shoulder" data-ru="Плечелопаточный периартрит" data-en="Shoulder periarthritis"></option>
+        <option value="rotator"          data-type="shoulder" data-ru="Повреждение ротаторной манжеты" data-en="Rotator cuff injury"></option>
+        <option value="bursitis"         data-type="shoulder" data-ru="Бурсит плечевого сустава" data-en="Shoulder bursitis"></option>
+
+        <option value="tennis_elbow"     data-type="elbow"   data-ru="Латеральный эпикондилит («теннисный локоть»)" data-en="Tennis elbow"></option>
+        <option value="golfer_elbow"    data-type="elbow"   data-ru="Медиальный эпикондилит" data-en="Golfer's elbow"></option>
+        <option value="olecranon"       data-type="elbow"   data-ru="Бурсит локтевого отростка" data-en="Olecranon bursitis"></option>
+
+        <option value="carpal"         data-type="wrist_hand" data-ru="Синдром запястного канала" data-en="Carpal tunnel syndrome"></option>
+        <option value="de_quervain"     data-type="wrist_hand" data-ru="Теносиновит де Кервена" data-en="De Quervain’s tenosynovitis"></option>
+        <option value="arthritis_hand"  data-type="wrist_hand" data-ru="Артрит/артроз кисти" data-en="Hand arthritis / osteoarthritis"></option>
+
+        <option value="cervical_radiculopathy" data-type="numbness" data-ru="Шейная радикулопатия" data-en="Cervical radiculopathy"></option>
+        <option value="ulnar_neuropathy"      data-type="numbness" data-ru="Невропатия локтевого нерва" data-en="Ulnar neuropathy"></option>
+
+        <option value="cervical_osteo" data-type="neck_radiating" data-ru="Шейный остеохондроз с корешковым синдромом" data-en="Cervical osteochondrosis with radiculopathy"></option>
+
+        <option value="muscle_strain" data-type="overload" data-ru="Мышечное перенапряжение / миозит" data-en="Muscle strain / myositis"></option>
+        <option value="tendinitis"     data-type="overload" data-ru="Тендинит сухожилий" data-en="Tendinitis"></option>
+
+        <option value="trauma"   data-type="other" data-ru="Травма / ушиб / перелом" data-en="Trauma / bruise / fracture"></option>
+        <option value="unknown"  data-type="other" data-ru="Неясная причина" data-en="Unclear cause"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Сила боли / дискомфорта (0–10):" data-en="Pain / discomfort intensity (0–10):">Сила боли:</label>
+      <select id="painLevel">
+        <option value="0-4" data-ru="0–4 – терпимо" data-en="0–4 – tolerable"></option>
+        <option value="5-7" data-ru="5–7 – мешает" data-en="5–7 – interferes"></option>
+        <option value="8-10" data-ru="8–10 – очень сильная" data-en="8–10 – very severe"></option>
+      </select>
+    </div>
+
+    <button onclick="showRecommendation()" data-ru="Показать рекомендации" data-en="Show recommendations">Показать рекомендации</button>
+
+    <div style="text-align:center; margin:40px 0;">
+      <button onclick="history.back()" style="background:#4b5563;color:white;padding:14px 36px;border:none;border-radius:12px;font-weight:bold;">
+        <span data-ru="НАЗАД" data-en="BACK">НАЗАД</span>
+      </button>
+    </div>
+
+    <div id="recommendation" class="recommendation" style="display:none;"></div>
+  </div>
+
+  <footer data-ru="© 2025 Мини-медицинская машина | Это только ориентир!<br>При отёке, сильном покраснении, невозможности пошевелить рукой — срочно к врачу!"
+          data-en="© 2025 Mini Medical Assistant | Guide only!<br>Swelling, severe redness, inability to move arm — see doctor immediately!">
+  </footer>
+
+  <!-- УНИВЕРСАЛЬНЫЙ СКРИПТ ПЕРЕВОДА -->
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-ru][data-en]');
+
+    let currentLang = 'ru';
+
+    function updateAllTexts() {
+      translatable.forEach(el => el.innerHTML = el.dataset[currentLang]);
+      document.querySelectorAll('option[data-ru][data-en]').forEach(opt => opt.textContent = opt.dataset[currentLang]);
+      document.title = document.querySelector('h1').dataset[currentLang] + ' — BMO';
+      document.documentElement.lang = currentLang;
+      filterDiseases();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      updateAllTexts();
+    }
+
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    currentLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(currentLang);
+
+    function filterDiseases() {
+      const type = document.getElementById('painType').value;
+      const options = document.querySelectorAll('#disease option');
+
+      let first = null;
+      options.forEach(opt => {
+        const show = opt.dataset.type === type || opt.dataset.type === 'other';
+        opt.style.display = show ? 'block' : 'none';
+        if (show && !first) first = opt;
+      });
+      if (first) document.getElementById('disease').value = first.value;
+    }
+
+    document.getElementById('painType').addEventListener('change', filterDiseases);
+
+    function showRecommendation() {
+      const disease = document.getElementById('disease').value;
+      const level = document.getElementById('painLevel').value;
+      const isEn = currentLang === 'en';
+
+      let rec = `<strong>${isEn ? 'Intensity' : 'Сила'}:</strong> ${document.querySelector('#painLevel').selectedOptions[0].textContent}<br><br>`;
+
+      if (disease === 'trauma' && level === '8-10') {
+        rec += isEn
+          ? `<div class="warning">POSSIBLE FRACTURE OR SEVERE INJURY!<br>Go to ER or trauma center immediately!</div>`
+          : `<div class="warning">ВОЗМОЖЕН ПЕРЕЛОМ ИЛИ СИЛЬНОЕ ПОВРЕЖДЕНИЕ!<br>Срочно в травмпункт или скорую!</div>`;
+      }
+
+      const advice = isEn ? {
+        periarthritis: "Shoulder periarthritis:<br>• NSAIDs (Ibuprofen)<br>• Pendulum exercises, physiotherapy<br>• Massage",
+        rotator: "Rotator cuff injury:<br>• Rest + ice first 48h<br>• Then rehab exercises<br>• MRI if pain persists",
+        bursitis: "Shoulder bursitis:<br>• Ice, NSAIDs<br>• Aspiration if large swelling (by doctor only)",
+        tennis_elbow: "Tennis elbow:<br>• Elbow brace, ice<br>• Shockwave therapy is gold standard",
+        golfer_elbow: "Golfer's elbow:<br>• Stretching, NSAIDs<br>• Avoid repetitive flexion",
+        carpal: "Carpal tunnel syndrome:<br>• Night splint<br>• B6 vitamins, NSAIDs<br>• Numbness → neurologist + EMG",
+        de_quervain: "De Quervain’s tenosynovitis:<br>• Rigid thumb spica brace 4–6 weeks<br>• Steroid injection very effective",
+        cervical_radiculopathy: "Cervical radiculopathy:<br>• NSAIDs + muscle relaxants + B-vitamins<br>• MRI if numbness",
+        cervical_osteo: "Cervical osteochondrosis with radiation:<br>• Mydocalm, NSAIDs<br>• Neck exercises, orthopedic pillow",
+        muscle_strain: "Muscle strain:<br>• Rest 2–3 days, warmth<br>• Voltaren gel, light stretching",
+        tendinitis: "Tendinitis:<br>• Ice + rest<br>• Eccentric exercises after 5–7 days",
+        trauma: "Trauma/bruise:<br>• Rest, elevation, ice 20 min every 2h<br>• Cannot move → X-ray / ER",
+        unknown: "Unclear cause:<br>See orthopedist or neurologist + imaging as needed."
+      } : {
+        periarthritis: "Плечелопаточный периартрит:<br>• НПВС (Ибупрофен, Кеторол)<br>• ЛФК, маятниковые упражнения<br>• Физиотерапия, массаж",
+        rotator: "Повреждение ротаторной манжеты:<br>• Покой + холод первые 48 ч<br>• Затем ЛФК у реабилитолога<br>• МРТ плеча при длительной боли",
+        bursitis: "Бурсит плеча:<br>• Холод, НПВС<br>• Пункция при большом отёке (только врач!)",
+        tennis_elbow: "Теннисный локоть:<br>• Ортез/бандаж, холод<br>• Ударно-волновая терапия — золотой стандарт",
+        golfer_elbow: "Локоть гольфиста:<br>• Растяжка сгибателей, НПВС<br>• Избегать нагрузки на сгибание",
+        carpal: "Синдром запястного канала:<br>• Ночной ортез<br>• НПВС, витамины B6<br>• При онемении — ЭНМГ + невролог",
+        de_quervain: "Теносиновит де Кервена:<br>• Жёсткий ортез на большой палец 4–6 недель<br>• Укол кортикостероидов",
+        cervical_radiculopathy: "Шейная радикулопатия:<br>• НПВС + миорелаксанты + витамины B<br>• МРТ шейного отдела срочно при онемении",
+        cervical_osteo: "Шейный остеохондроз с иррадиацией:<br>• Мидокалм, Аркоксия<br>• ЛФК шеи, ортопедическая подушка",
+        muscle_strain: "Мышечное перенапряжение:<br>• Покой 2–3 дня, тепло<br>• Мазь Вольтарен, лёгкая растяжка",
+        tendinitis: "Тендинит:<br>• Холод + покой<br>• Эксцентрические упражнения через 5–7 дней",
+        trauma: "Травма/ушиб:<br>• Покой, возвышенное положение, холод<br>• При невозможности пошевелить — рентген/травмпункт",
+        unknown: "Неясно:<br>Начните с травматолога-ортопеда или невролога + УЗИ/МРТ по показаниям."
+      };
+
+      const selectedText = document.querySelector('#disease').selectedOptions[0].textContent;
+      rec += `<strong>${selectedText}:</strong><br>`;
+      rec += advice[disease] || (isEn ? "See a doctor soon." : "Обратитесь к врачу.");
+
+      document.getElementById('recommendation').innerHTML = rec;
+      document.getElementById('recommendation').style.display = 'block';
+    }
+  </script>
+
+  <!-- Firebase -->
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtMIXlm5vvWEg2TjI2B3hAnMufNKeJRMk",
+    authDomain: "medhelper-6d1c6.firebaseapp.com",
+    projectId: "medhelper-6d1c6",
+    storageBucket: "medhelper-6d1c6.firebasestorage.app",
+    messagingSenderId: "844786613460",
+    appId: "1:844786613460:web:4a059dee65d63a28918f41",
+    measurementId: "G-0CQKYNJW7D"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>

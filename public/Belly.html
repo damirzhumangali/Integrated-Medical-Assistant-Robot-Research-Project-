@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <title>BMO — Живот</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fefce8;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .lang-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .lang-btn.active {
+      background: #f97316;
+      color: white;
+    }
+    .lang-btn:hover:not(.active) { background: rgba(249,115,22,0.2); }
+
+    header {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    h1 { font-size: 2.7rem; margin-bottom: 10px; }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+      padding: 35px;
+    }
+    .section { margin-bottom: 30px; }
+    label { font-size: 1.15rem; margin-bottom: 10px; display: block; font-weight: 600; }
+    select, button {
+      width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: 1px solid #ccc; font-size: 16px;
+    }
+    button {
+      background: #f97316; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #ea580c; }
+    .recommendation {
+      background: #fff7ed; padding: 20px; border-radius: 12px; margin-top: 25px;
+      border-left: 5px solid #f97316; font-size: 1.05rem;
+    }
+    .warning { color: #c53030; font-weight: bold; font-size: 1.2rem; }
+    footer {
+      text-align: center; padding: 25px; color: #555; background: #fff7ed;
+      border-radius: 16px; margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
+  <header>
+    <h1 data-ru="Живот – Где болит?" data-en="Abdomen – Where Does It Hurt?">Живот – Где болит?</h1>
+    <p data-ru="Быстрая ориентировка при боли в животе<br><strong>Рвота кровью • чёрный стул • нестерпимая боль • жёсткий живот → СКОРАЯ 103/112 СЕЙЧАС!</strong>"
+       data-en="Quick guide for abdominal pain<br><strong>Vomiting blood • black stool • unbearable pain • rigid abdomen → CALL EMERGENCY 911/112 NOW!</strong>">
+      Быстрая ориентировка при боли в животе<br><strong>Рвота кровью • чёрный стул • нестерпимая боль • жёсткий живот → СКОРАЯ 103/112 СЕЙЧАС!</strong>
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="section">
+      <label data-ru="Где и как болит:" data-en="Where and how does it hurt:">Где и как болит:</label>
+      <select id="painType" onchange="toggleDiseaseSection()">
+        <option value="upper" data-ru="Верх живота (под ложечкой)" data-en="Upper abdomen (epigastric)"></option>
+        <option value="right_upper" data-ru="Правое подреберье" data-en="Right upper quadrant"></option>
+        <option value="left_upper" data-ru="Левое подреберье" data-en="Left upper quadrant"></option>
+        <option value="around_navel" data-ru="Вокруг пупка" data-en="Around navel"></option>
+        <option value="lower" data-ru="Низ живота" data-en="Lower abdomen"></option>
+        <option value="right_lower" data-ru="Правый низ живота" data-en="Right lower quadrant"></option>
+        <option value="left_lower" data-ru="Левый низ живота" data-en="Left lower quadrant"></option>
+        <option value="diffuse" data-ru="Весь живот / нестерпимо" data-en="Whole abdomen / unbearable"></option>
+        <option value="other" data-ru="Не пойму где / хроническая" data-en="Unclear location / chronic"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Возможная причина:" data-en="Possible cause:">Возможная причина:</label>
+      <select id="disease">
+        <option value="gastritis" data-type="upper" data-ru="Гастрит / язва желудка" data-en="Gastritis / stomach ulcer"></option>
+        <option value="reflux" data-type="upper" data-ru="ГЭРБ / изжога" data-en="GERD / heartburn"></option>
+        <option value="pancreatitis" data-type="upper" data-ru="Панкреатит" data-en="Pancreatitis"></option>
+        <option value="cholecystitis" data-type="right_upper" data-ru="Холецистит / камни в желчном" data-en="Cholecystitis / gallstones"></option>
+        <option value="hepatitis" data-type="right_upper" data-ru="Проблемы с печенью" data-en="Liver problems"></option>
+        <option value="spleen" data-type="left_upper" data-ru="Проблемы с селезёнкой" data-en="Spleen issues"></option>
+        <option value="gastroenteritis" data-type="around_navel" data-ru="Гастроэнтерит / отравление" data-en="Gastroenteritis / food poisoning"></option>
+        <option value="early_appendicitis" data-type="around_navel" data-ru="Начало аппендицита" data-en="Early appendicitis"></option>
+        <option value="cystitis" data-type="lower" data-ru="Цистит / проблемы мочевого" data-en="Cystitis / urinary issues"></option>
+        <option value="ibs" data-type="lower" data-ru="Синдром раздражённого кишечника" data-en="Irritable bowel syndrome (IBS)"></option>
+        <option value="appendicitis" data-type="right_lower" data-ru="Аппендицит" data-en="Appendicitis"></option>
+        <option value="ovarian_right" data-type="right_lower" data-ru="Проблемы правого яичника / киста" data-en="Right ovarian issues / cyst"></option>
+        <option value="diverticulitis" data-type="left_lower" data-ru="Дивертикулит" data-en="Diverticulitis"></option>
+        <option value="ovarian_left" data-type="left_lower" data-ru="Проблемы левого яичника" data-en="Left ovarian issues"></option>
+        <option value="peritonitis" data-type="diffuse" data-ru="Перитонит / прободение" data-en="Peritonitis / perforation"></option>
+        <option value="aaa" data-type="diffuse" data-ru="Аневризма аорты (у пожилых)" data-en="Abdominal aortic aneurysm"></option>
+        <option value="bowel_obstruction" data-type="diffuse" data-ru="Непроходимость кишечника" data-en="Bowel obstruction"></option>
+        <option value="stress" data-type="other" data-ru="Психосоматика / стресс" data-en="Psychosomatic / stress"></option>
+        <option value="unknown" data-type="other" data-ru="Неясная причина" data-en="Unclear cause"></option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label data-ru="Уровень боли (0–10):" data-en="Pain level (0–10):">Уровень боли:</label>
+      <select id="painLevel">
+        <option value="0-3" data-ru="0–3 – Слабая / терпимая" data-en="0–3 – Mild / bearable"></option>
+        <option value="4-6" data-ru="4–6 – Умеренная" data-en="4–6 – Moderate"></option>
+        <option value="7-10" data-ru="7–10 – Сильная / невыносимая" data-en="7–10 – Severe / unbearable"></option>
+      </select>
+    </div>
+
+    <button onclick="showRecommendation()" data-ru="Показать рекомендации" data-en="Show recommendations">Показать рекомендации</button>
+
+    <div style="text-align:center; margin:35px 0;">
+      <button onclick="history.back()" style="background:#4b5563;color:white;padding:14px 36px;border:none;border-radius:12px;font-weight:bold;">
+        <span data-ru="НАЗАД" data-en="BACK">НАЗАД</span>
+      </button>
+    </div>
+
+    <div id="recommendation" class="recommendation" style="display:none;"></div>
+  </div>
+
+  <footer data-ru="© 2025 Мини-медицинская машина | Это симуляция — всегда консультируйтесь с врачом!<br>При внезапной сильной боли в животе + рвоте, температуре, напряжении живота — немедленно звоните 103 или 112!"
+          data-en="© 2025 Mini Medical Assistant | This is only a simulation – always consult a doctor!<br>If sudden severe abdominal pain + vomiting, fever, rigid abdomen – call 911 immediately!">
+  </footer>
+
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-ru][data-en]');
+
+    let currentLang = 'ru';
+
+    function updateAllTexts() {
+      translatable.forEach(el => {
+        el.innerHTML = el.dataset[currentLang];
+      });
+
+      document.querySelectorAll('option[data-ru][data-en]').forEach(opt => {
+        opt.textContent = opt.dataset[currentLang];
+      });
+
+      document.documentElement.lang = currentLang;
+      document.title = document.querySelector('h1').dataset[currentLang] + ' — BMO';
+      toggleDiseaseSection();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      updateAllTexts();
+    }
+
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    currentLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(currentLang);
+
+    function toggleDiseaseSection() {
+      const type = document.getElementById('painType').value;
+      const options = document.querySelectorAll('#disease option');
+
+      let firstVisible = null;
+      options.forEach(opt => {
+        const show = opt.dataset.type === type || opt.dataset.type === 'other';
+        opt.style.display = show ? 'block' : 'none';
+        if (show && !firstVisible) firstVisible = opt;
+      });
+
+      if (firstVisible) {
+        document.getElementById('disease').value = firstVisible.value;
+      }
+    }
+
+    document.getElementById('painType').addEventListener('change', toggleDiseaseSection);
+
+    function showRecommendation() {
+      const disease = document.getElementById('disease').value;
+      const painLevel = document.getElementById('painLevel').value;
+      const isEn = currentLang === 'en';
+
+      let rec = `<strong>${isEn ? 'Pain level' : 'Уровень боли'}:</strong> ${document.querySelector('#painLevel').selectedOptions[0].textContent}<br><br>`;
+
+      const emergency = ['appendicitis', 'peritonitis', 'aaa', 'bowel_obstruction'];
+      if (emergency.includes(disease) || (painLevel === '7-10' && ['right_lower', 'diffuse'].includes(document.getElementById('painType').value))) {
+        rec += isEn
+          ? `<span class="warning">CALL EMERGENCY 911/112 IMMEDIATELY!</span><br>`
+          : `<span class="warning">ВЫЗЫВАЙТЕ СКОРУЮ 103/112 НЕМЕДЛЕННО!</span><br>`;
+      } else if (painLevel === '7-10') {
+        rec += isEn
+          ? `<span class="warning">Severe pain — seek medical help urgently!</span><br><br>`
+          : `<span class="warning">Сильная боль — срочно к врачу!</span><br><br>`;
+      }
+
+      const recs = isEn ? {
+        gastritis: "Gastritis / stomach ulcer: Omeprazole 20–40 mg, antacids, bland diet.",
+        reflux: "GERD: Omeprazole, avoid lying after meals, elevate head.",
+        pancreatitis: "Pancreatitis: Fasting, urgent medical help!",
+        cholecystitis: "Cholecystitis: No-spa, fasting, ultrasound needed.",
+        gastroenteritis: "Food poisoning: Rehydration, Smecta, fasting.",
+        appendicitis: "Appendicitis — EMERGENCY! Call 911 now!",
+        cystitis: "Cystitis: Monurol, drink lots of water, see urologist.",
+        ibs: "IBS: FODMAP diet, Duspatalin, probiotics.",
+        peritonitis: "Peritonitis — EMERGENCY!",
+        aaa: "Aortic aneurysm — EMERGENCY!",
+        bowel_obstruction: "Bowel obstruction — EMERGENCY!",
+        stress: "Psychosomatic: Breathing exercises, magnesium.",
+        unknown: "Unclear cause: See a doctor soon."
+      } : {
+        gastritis: "Гастрит / язва: Омепразол 20–40 мг, антациды, диета №1.",
+        reflux: "ГЭРБ: Омепразол, не ложиться после еды, поднять изголовье.",
+        pancreatitis: "Панкреатит: Голод, срочно к врачу!",
+        cholecystitis: "Холецистит: Но-шпа, голод, УЗИ желчного.",
+        gastroenteritis: "Отравление: Регидрон, Смекта, голод.",
+        appendicitis: "Аппендицит — СКОРАЯ немедленно!",
+        cystitis: "Цистит: Монурал, много воды, к урологу.",
+        ibs: "СРК: Диета FODMAP, Дюспаталин, пробиотики.",
+        peritonitis: "Перитонит — СКОРАЯ!",
+        aaa: "Аневризма аорты — СКОРАЯ!",
+        bowel_obstruction: "Непроходимость — СКОРАЯ!",
+        stress: "Психосоматика: Дыхание, магний.",
+        unknown: "Неясная причина: К врачу."
+      };
+
+      const selected = document.querySelector('#disease').selectedOptions[0];
+      if (selected && recs[disease]) {
+        rec += `<strong>${selected.textContent}:</strong><br>${recs[disease]}`;
+      }
+
+      document.getElementById('recommendation').innerHTML = rec;
+      document.getElementById('recommendation').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-ru="Где болит? — BMO" data-en="Where does it hurt? — BMO">Где болит? — BMO</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <link rel="icon" href="icon-192.png" type="image/png">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      background: #f0f8ff; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Переключатель языка */
+    .lang-switch {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      padding: 6px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 6px;
+    }
+    .lang-btn {
+      padding: 9px 16px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+      color: white;
+      text-align: center;
+      padding: 40px 20px 30px;
+    }
+    h1 { font-size: 2.4rem; margin-bottom: 8px; }
+    header p { font-size: 1.15rem; opacity: 0.95; }
+
+    .model-container {
+      flex: 1;
+      padding: 10px;
+    }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      min-height: 580px;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .hotspot {
+  width: 24px; /* Уменьшаем размер точки */
+  height: 24px; /* Уменьшаем размер точки */
+  background: #0ea5e9;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(255,59,48,0.9);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hotspot:hover { 
+  transform: scale(1.3); 
+  background: #ff453a; 
+}
+
+.annotation {
+  position: absolute;
+  background: rgba(0,0,0,0.92);
+  color: white;
+  padding: 8px 14px; /* Уменьшаем отступы внутри текста */
+  border-radius: 14px;
+  font-size: 14px; /* Уменьшаем шрифт */
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -140%);
+  transition: opacity 0.3s;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.hotspot:hover + .annotation {
+  opacity: 1;
+}
+
+a {
+  font-size: 14px; /* Уменьшаем размер текста в ссылке */
+  padding: 8px 16px; /* Уменьшаем отступы в ссылке */
+}
+
+
+    .back-btn {
+      text-align: center;
+      padding: 20px;
+    }
+    .back-btn button {
+      background: #1e293b;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transition: all 0.3s;
+    }
+    .back-btn button:hover {
+      background: #0f172a;
+      transform: translateY(-4px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #e0f2fe;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Переключатель языка -->
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
+  <header>
+    <h1 data-ru="Где у вас болит?" data-en="Where does it hurt?">Где у вас болит?</h1>
+    <p data-ru="Нажмите на нужную часть тела" data-en="Tap on the body part that hurts">
+      Нажмите на нужную часть тела
+    </p>
+  </header>
+
+  <div class="model-container">
+    <model-viewer 
+      src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Xbot.glb"
+      alt="3D human model"
+      auto-rotate
+      rotation-per-second="25%"
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="2"
+      exposure="1"
+      camera-orbit="0deg 80deg 130%"
+      field-of-view="30deg"
+      interaction-prompt="none">
+
+      <!-- Кнопка + отдельная аннотация, плюс data-url для перехода -->
+      <button class="hotspot"
+              slot="hotspot-1"
+              data-position="0m 1.75m 0.02m"
+              data-normal="0 1 0"
+              data-url="Head.html"></button>
+      <div class="annotation" data-ru="Голова" data-en="Head">Голова</div>
+
+      <button class="hotspot"
+              slot="hotspot-2"
+              data-position="0m 1.55m 0.02m"
+              data-normal="0 1 0"
+              data-url="Neck.html"></button>
+      <div class="annotation" data-ru="Шея" data-en="Neck">Шея</div>
+
+      <button class="hotspot"
+              slot="hotspot-3"
+              data-position="0m 1.35m 0.05m"
+              data-normal="0 1 0"
+              data-url="grudb.html"></button>
+      <div class="annotation" data-ru="Грудь" data-en="Chest">Грудь</div>
+
+      <button class="hotspot"
+              slot="hotspot-4"
+              data-position="0m 1.05m 0.05m"
+              data-normal="0 1 0"
+              data-url="Belly.html"></button>
+      <div class="annotation" data-ru="Живот" data-en="Belly">Живот</div>
+
+      <button class="hotspot"
+              slot="hotspot-5"
+              data-position="0m 1.2m -0.25m"
+              data-normal="0 0 -1"
+              data-url="Back.html"></button>
+      <div class="annotation" data-ru="Спина" data-en="Back">Спина</div>
+
+      <button class="hotspot"
+              slot="hotspot-6"
+              data-position="-0.45m 1.25m 0.02m"
+              data-normal="-1 0 0"
+              data-url="Lefthand.html"></button>
+      <div class="annotation" data-ru="Левая рука" data-en="Left arm">Левая рука</div>
+
+      <button class="hotspot"
+              slot="hotspot-7"
+              data-position="0.45m 1.25m 0.02m"
+              data-normal="1 0 0"
+              data-url="Righthand.html"></button>
+      <div class="annotation" data-ru="Правая рука" data-en="Right arm">Правая рука</div>
+
+      <button class="hotspot"
+              slot="hotspot-8"
+              data-position="-0.22m 0.45m 0m"
+              data-normal="-1 0 0"
+              data-url="Leftleg.html"></button>
+      <div class="annotation" data-ru="Левая нога" data-en="Left leg">Левая нога</div>
+
+      <button class="hotspot"
+              slot="hotspot-9"
+              data-position="0.22m 0.45m 0m"
+              data-normal="1 0 0"
+              data-url="Rightleg.html"></button>
+      <div class="annotation" data-ru="Правая нога" data-en="Right leg">Правая нога</div>
+
+    </model-viewer>
+  </div>
+
+  <div class="back-btn">
+    <button data-ru="Назад" data-en="Back" onclick="history.back()">Назад</button>
+  </div>
+
+  <footer data-ru="© 2025 BMO • Это справочник, а не замена врачу"
+           data-en="© 2025 BMO • This is a guide, not a substitute for a doctor">
+    © 2025 BMO • Это справочник, а не замена врачу
+  </footer>
+
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtMIXlm5vvWEg2TjI2B3hAnMufNKeJRMk",
+    authDomain: "medhelper-6d1c6.firebaseapp.com",
+    projectId: "medhelper-6d1c6",
+    storageBucket: "medhelper-6d1c6.firebasestorage.app",
+    messagingSenderId: "844786613460",
+    appId: "1:844786613460:web:4a059dee65d63a28918f41",
+    measurementId: "G-0CQKYNJW7D"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+  <!-- Язык + переход по частям тела -->
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-ru][data-en]');
+
+    function setLanguage(lang) {
+      langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      translatable.forEach(el => {
+        el.innerHTML = el.dataset[lang];
+        if (el.tagName === 'TITLE') {
+          document.title = el.dataset[lang];
+        }
+      });
+      document.documentElement.lang = lang;
+      localStorage.setItem('lang', lang);
+    }
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+
+    const savedLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(savedLang);
+
+    // Переход на страницы по клику на hotspot
+    document.querySelectorAll('.hotspot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const url = btn.dataset.url;
+        if (url) {
+          window.location.href = url;
+        }
+      });
+    });
+  </script>
+  <script src="https://bot.jaicp.com/chatwidget/VLIxLGiW:42a99174df28ec66a631f2b2ffc955edc62e2673/justwidget.js" async></script>
+  
+</body>
+</html>
